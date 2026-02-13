@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace TravisObregon\FilamentDiffs;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class FilamentDiffsPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'filament-diffs';
     }
 
     public function register(Panel $panel): void
