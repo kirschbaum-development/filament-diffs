@@ -5,6 +5,7 @@ namespace TravisObregon\FilamentDiffs\Infolists\Components;
 use Closure;
 use Filament\Infolists\Components\Entry;
 use Filament\Support\Components\Contracts\HasEmbeddedView;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Js;
 
 class DiffEntry extends Entry implements HasEmbeddedView
@@ -50,6 +51,59 @@ class DiffEntry extends Entry implements HasEmbeddedView
     public function diffOptions(array | Closure $options): static
     {
         $this->diffOptions = $options;
+
+        return $this;
+    }
+
+    public function fromModels(Model | Closure $old, Model | Closure $new, string | Closure $attribute = 'content'): static
+    {
+        $this->old(function () use ($old, $attribute): ?string {
+            $model = $this->evaluate($old);
+            $attr = $this->evaluate($attribute);
+
+            return $model?->getAttribute($attr);
+        });
+
+        $this->new(function () use ($new, $attribute): ?string {
+            $model = $this->evaluate($new);
+            $attr = $this->evaluate($attribute);
+
+            return $model?->getAttribute($attr);
+        });
+
+        return $this;
+    }
+
+    /**
+     * @param  array<string, mixed> | Closure  $old
+     * @param  array<string, mixed> | Closure  $new
+     * @param  array<int, string> | null  $only
+     */
+    public function fromArrays(array | Closure $old, array | Closure $new, ?array $only = null): static
+    {
+        $this->old(function () use ($old, $only): string {
+            $data = $this->evaluate($old);
+
+            if ($only !== null) {
+                $data = array_intersect_key($data, array_flip($only));
+            }
+
+            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        });
+
+        $this->new(function () use ($new, $only): string {
+            $data = $this->evaluate($new);
+
+            if ($only !== null) {
+                $data = array_intersect_key($data, array_flip($only));
+            }
+
+            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        });
+
+        if ($this->language === null) {
+            $this->language('json');
+        }
 
         return $this;
     }
