@@ -7,6 +7,12 @@ use Filament\Panel;
 
 class FilamentDiffsPlugin implements Plugin
 {
+    protected ?string $defaultFileName = null;
+
+    protected ?string $defaultLanguage = null;
+
+    protected ?array $defaultOptions = null;
+
     public function getId(): string
     {
         return 'filament-diffs';
@@ -33,5 +39,41 @@ class FilamentDiffsPlugin implements Plugin
         $plugin = filament(app(static::class)->getId());
 
         return $plugin;
+    }
+
+    public function defaultFileName(?string $fileName): static
+    {
+        $this->defaultFileName = $fileName;
+
+        return $this;
+    }
+
+    public function getDefaultFileName(): ?string
+    {
+        return $this->defaultFileName ?? config('filament-diffs.default_file_name');
+    }
+
+    public function defaultLanguage(?string $language): static
+    {
+        $this->defaultLanguage = $language;
+
+        return $this;
+    }
+
+    public function getDefaultLanguage(): ?string
+    {
+        return $this->defaultLanguage ?? config('filament-diffs.default_language');
+    }
+
+    public function defaultOptions(array $options): static
+    {
+        $this->defaultOptions = $options;
+
+        return $this;
+    }
+
+    public function getDefaultOptions(): array
+    {
+        return $this->defaultOptions ?? config('filament-diffs.default_options', []);
     }
 }

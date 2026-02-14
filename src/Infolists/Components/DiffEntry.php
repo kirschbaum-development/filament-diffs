@@ -123,17 +123,20 @@ class DiffEntry extends Entry
 
     public function getFileName(): ?string
     {
-        return $this->evaluate($this->fileName);
+        return $this->evaluate($this->fileName) ?? config('filament-diffs.default_file_name');
     }
 
     public function getLanguage(): ?string
     {
-        return $this->evaluate($this->language);
+        return $this->evaluate($this->language) ?? config('filament-diffs.default_language');
     }
 
     public function getOptions(): array
     {
-        return $this->evaluate($this->options);
+        return array_merge(
+            config('filament-diffs.default_options', []),
+            $this->evaluate($this->options),
+        );
     }
 
     public function getPayload(): array

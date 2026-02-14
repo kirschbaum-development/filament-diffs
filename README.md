@@ -1,63 +1,99 @@
-# Render visual diffs between Eloquent model versions in Filament.
+# Filament Diffs
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/travisobregon/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/travisobregon/filament-diffs)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/travisobregon/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/travisobregon/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/travisobregon/filament-diffs/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/travisobregon/filament-diffs/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/travisobregon/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/travisobregon/filament-diffs)
 
-
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Render visual diffs between Eloquent model versions in Filament. Powered by [@pierre/diffs](https://diffs.com).
 
 ## Installation
-
-You can install the package via composer:
 
 ```bash
 composer require travisobregon/filament-diffs
 ```
 
-> [!IMPORTANT]
-> If you have not set up a custom theme and are using Filament Panels follow the instructions in the [Filament Docs](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme) first.
+## Usage
 
-After setting up a custom theme add the plugin's views to your theme css file or your app's css file if using the standalone packages.
+### Infolist Entry
 
-```css
-@source '../../../../vendor/travisobregon/filament-diffs/resources/**/*.blade.php';
+Use `DiffEntry` in any infolist to display a diff between two strings:
+
+```php
+use TravisObregon\FilamentDiffs\Infolists\Components\DiffEntry;
+
+DiffEntry::make('changes')
+    ->label('Changes')
+    ->old(fn ($record) => $record->previousVersion?->content)
+    ->new(fn ($record) => $record->content)
+    ->fileName('post.md')
+    ->language('markdown')
 ```
 
-You can publish and run the migrations with:
+### Comparing Model Versions
 
-```bash
-php artisan vendor:publish --tag="filament-diffs-migrations"
-php artisan migrate
+Use `fromModels()` to compare an attribute across two model instances:
+
+```php
+DiffEntry::make('changes')
+    ->fromModels(
+        old: fn ($record) => $record->previousVersion,
+        new: fn ($record) => $record,
+        attribute: 'content',
+    )
 ```
 
-You can publish the config file with:
+### Comparing Arrays / JSON
+
+Use `fromArrays()` to diff structured data (automatically sets language to `json`):
+
+```php
+DiffEntry::make('changes')
+    ->fromArrays(
+        old: fn ($record) => $record->previousVersion->settings,
+        new: fn ($record) => $record->settings,
+        only: ['theme', 'notifications'], // optional: limit to specific keys
+    )
+```
+
+### Panel Plugin (Optional)
+
+Register the plugin in your panel provider for per-panel configuration:
+
+```php
+use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugin(
+            FilamentDiffsPlugin::make()
+                ->defaultLanguage('markdown')
+                ->defaultFileName('document.md')
+                ->defaultOptions([
+                    // Options passed to @pierre/diffs FileDiff component
+                ])
+        );
+}
+```
+
+## Configuration
+
+Publish the config file:
 
 ```bash
 php artisan vendor:publish --tag="filament-diffs-config"
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="filament-diffs-views"
-```
-
-This is the contents of the published config file:
-
 ```php
+// config/filament-diffs.php
 return [
+    'default_file_name' => null,
+    'default_language' => null,
+    'default_options' => [],
 ];
 ```
 
-## Usage
-
-```php
-$filamentDiffs = new TravisObregon\FilamentDiffs();
-echo $filamentDiffs->echoPhrase('Hello, TravisObregon!');
-```
+Per-component settings always take precedence over config defaults.
 
 ## Testing
 
