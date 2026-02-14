@@ -11,15 +11,9 @@ class FilamentDiffsServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-diffs';
 
-    public static string $viewNamespace = 'filament-diffs';
-
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name);
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
     }
 
     public function packageRegistered(): void {}
