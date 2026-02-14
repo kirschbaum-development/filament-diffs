@@ -1,26 +1,44 @@
-import { FileDiff, parseDiffFromFile } from '@pierre/diffs'
+import { FileDiff } from '@pierre/diffs'
 
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('diffEntry', ({ old: oldContent, new: newContent, fileName, language, options }) => ({
+    window.Alpine.data('filamentDiffs', ({ old: oldContents, new: newContents, fileName, language, options }) => ({
         instance: null,
 
         init() {
-            const oldFile = { name: fileName ?? '', contents: oldContent ?? '', lang: language }
-            const newFile = { name: fileName ?? '', contents: newContent ?? '', lang: language }
+            this.render()
+        },
 
-            this.instance = new FileDiff(options ?? {})
+        render() {
+            this.cleanup()
 
-            this.instance.render({
+            const oldFile = {
+                fileName: fileName || 'file',
+                contents: oldContents || '',
+            }
+
+            const newFile = {
+                fileName: fileName || 'file',
+                contents: newContents || '',
+            }
+
+            this.instance = new FileDiff({
                 oldFile,
                 newFile,
-                fileDiff: parseDiffFromFile(oldFile, newFile),
-                fileContainer: this.$refs.container,
+                ...(options || {}),
             })
+
+            this.instance.mount(this.$refs.mount)
+        },
+
+        cleanup() {
+            if (this.instance) {
+                this.instance.destroy()
+                this.instance = null
+            }
         },
 
         destroy() {
-            this.instance?.cleanUp()
-            this.instance = null
+            this.cleanup()
         },
     }))
 })

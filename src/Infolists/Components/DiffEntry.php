@@ -4,12 +4,11 @@ namespace TravisObregon\FilamentDiffs\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
-use Filament\Support\Components\Contracts\HasEmbeddedView;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Js;
 
-class DiffEntry extends Entry implements HasEmbeddedView
+class DiffEntry extends Entry
 {
+    protected string $view = 'filament-diffs::diff-entry';
+
     protected string | Closure | null $oldContent = null;
 
     protected string | Closure | null $newContent = null;
@@ -18,7 +17,7 @@ class DiffEntry extends Entry implements HasEmbeddedView
 
     protected string | Closure | null $language = null;
 
-    protected array | Closure $diffOptions = [];
+    protected array | Closure $options = [];
 
     public function old(string | Closure | null $content): static
     {
@@ -48,14 +47,18 @@ class DiffEntry extends Entry implements HasEmbeddedView
         return $this;
     }
 
-    public function diffOptions(array | Closure $options): static
+    public function options(array | Closure $options): static
     {
-        $this->diffOptions = $options;
+        $this->options = $options;
 
         return $this;
     }
 
-    public function fromModels(Model | Closure $old, Model | Closure $new, string | Closure $attribute = 'content'): static
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model|\Closure  $old
+     * @param  \Illuminate\Database\Eloquent\Model|\Closure  $new
+     */
+    public function fromModels(mixed $old, mixed $new, string | Closure $attribute = 'content'): static
     {
         $this->old(function () use ($old, $attribute): ?string {
             $model = $this->evaluate($old);
@@ -75,9 +78,9 @@ class DiffEntry extends Entry implements HasEmbeddedView
     }
 
     /**
-     * @param  array<string, mixed> | Closure  $old
-     * @param  array<string, mixed> | Closure  $new
-     * @param  array<int, string> | null  $only
+     * @param  array<string, mixed>|\Closure  $old
+     * @param  array<string, mixed>|\Closure  $new
+     * @param  array<int, string>|null  $only
      */
     public function fromArrays(array | Closure $old, array | Closure $new, ?array $only = null): static
     {
@@ -128,32 +131,19 @@ class DiffEntry extends Entry implements HasEmbeddedView
         return $this->evaluate($this->language);
     }
 
-    public function getDiffOptions(): array
+    public function getOptions(): array
     {
-        return $this->evaluate($this->diffOptions) ?? [];
+        return $this->evaluate($this->options);
     }
 
-    public function toEmbeddedHtml(): string
+    public function getPayload(): array
     {
-        $payload = Js::from([
-            'old' => $this->getOldContent(),
-            'new' => $this->getNewContent(),
+        return [
+            'old' => $this->getOldContent() ?? '',
+            'new' => $this->getNewContent() ?? '',
             'fileName' => $this->getFileName(),
             'language' => $this->getLanguage(),
-            'options' => $this->getDiffOptions() ?: null,
-        ]);
-
-        $wireKey = md5(($this->getOldContent() ?? '') . ($this->getNewContent() ?? '') . ($this->getFileName() ?? ''));
-
-        ob_start(); ?>
-
-        <div
-            wire:key="<?= e($wireKey) ?>"
-            x-data="diffEntry(<?= $payload ?>)"
-        >
-            <div x-ref="container"></div>
-        </div>
-
-        <?php return $this->wrapEmbeddedHtml(ob_get_clean());
+            'options' => $this->getOptions(),
+        ];
     }
 }
