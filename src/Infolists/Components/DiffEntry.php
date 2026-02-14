@@ -4,6 +4,7 @@ namespace TravisObregon\FilamentDiffs\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
+use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
 
 class DiffEntry extends Entry
 {
@@ -123,20 +124,34 @@ class DiffEntry extends Entry
 
     public function getFileName(): ?string
     {
-        return $this->evaluate($this->fileName) ?? config('filament-diffs.default_file_name');
+        return $this->evaluate($this->fileName)
+            ?? $this->getPlugin()?->getDefaultFileName()
+            ?? config('filament-diffs.default_file_name');
     }
 
     public function getLanguage(): ?string
     {
-        return $this->evaluate($this->language) ?? config('filament-diffs.default_language');
+        return $this->evaluate($this->language)
+            ?? $this->getPlugin()?->getDefaultLanguage()
+            ?? config('filament-diffs.default_language');
     }
 
     public function getOptions(): array
     {
         return array_merge(
             config('filament-diffs.default_options', []),
+            $this->getPlugin()?->getDefaultOptions() ?? [],
             $this->evaluate($this->options),
         );
+    }
+
+    protected function getPlugin(): ?FilamentDiffsPlugin
+    {
+        try {
+            return FilamentDiffsPlugin::get();
+        } catch (\Exception) {
+            return null;
+        }
     }
 
     public function getPayload(): array

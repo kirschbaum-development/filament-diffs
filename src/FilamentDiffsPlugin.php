@@ -50,7 +50,7 @@ class FilamentDiffsPlugin implements Plugin
 
     public function getDefaultFileName(): ?string
     {
-        return $this->defaultFileName ?? config('filament-diffs.default_file_name');
+        return $this->defaultFileName;
     }
 
     public function defaultLanguage(?string $language): static
@@ -62,7 +62,7 @@ class FilamentDiffsPlugin implements Plugin
 
     public function getDefaultLanguage(): ?string
     {
-        return $this->defaultLanguage ?? config('filament-diffs.default_language');
+        return $this->defaultLanguage;
     }
 
     public function defaultOptions(array $options): static
@@ -72,8 +72,8 @@ class FilamentDiffsPlugin implements Plugin
         return $this;
     }
 
-    public function getDefaultOptions(): array
+    public function getDefaultOptions(): ?array
     {
-        return $this->defaultOptions ?? config('filament-diffs.default_options', []);
+        return $this->defaultOptions;
     }
 }
