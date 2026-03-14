@@ -16,14 +16,16 @@ Install the plugin with Composer:
 composer require travisobregon/filament-diffs
 ```
 
-## Infolist Entry
+## Infolist Entries
 
-Use `DiffEntry` in any [infolist](https://filamentphp.com/docs/5.x/infolists/entries/getting-started) to display a diff between two strings:
+### File Diff Entry
+
+Use `FileDiffEntry` in any [infolist](https://filamentphp.com/docs/5.x/infolists/entries/getting-started) to display a diff between two strings:
 
 ```php
-use TravisObregon\FilamentDiffs\Infolists\Components\DiffEntry;
+use TravisObregon\FilamentDiffs\Infolists\Components\FileDiffEntry;
 
-DiffEntry::make('changes')
+FileDiffEntry::make('changes')
     ->label('Changes')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
@@ -31,12 +33,25 @@ DiffEntry::make('changes')
 
 Both `old()` and `new()` accept a string or a closure that receives the current record. If either value is `null`, it is treated as an empty string.
 
+### File Entry
+
+Use `FileEntry` to render a single file with syntax highlighting:
+
+```php
+use TravisObregon\FilamentDiffs\Infolists\Components\FileEntry;
+
+FileEntry::make('source')
+    ->label('Source Code')
+    ->content(fn ($record) => $record->content)
+    ->fileName('app.php')
+```
+
 ### Setting the File Name
 
 The file name controls syntax highlighting detection when no explicit language is set:
 
 ```php
-DiffEntry::make('changes')
+FileDiffEntry::make('changes')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
     ->fileName('post.md')
@@ -44,23 +59,21 @@ DiffEntry::make('changes')
 
 ### Setting the Language
 
-You can explicitly set the syntax highlighting language using any [Shiki language identifier](https://shiki.style/languages) (e.g., `php`, `javascript`, `markdown`, `json`):
+You can explicitly set the syntax highlighting language using any [Shiki language identifier](https://shiki.style/languages) (e.g., `php`, `javascript`, `markdown`, `json`). When set, this overrides language detection from the file name:
 
 ```php
-DiffEntry::make('changes')
+FileDiffEntry::make('changes')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
     ->language('markdown')
 ```
 
-When both `fileName()` and `language()` are set, the explicit language takes precedence.
-
 ### Passing Options
 
-You can pass additional options directly to the underlying [@pierre/diffs `FileDiff` component](https://diffs.com/docs):
+You can pass additional options directly to the underlying [@pierre/diffs components](https://diffs.com/docs):
 
 ```php
-DiffEntry::make('changes')
+FileDiffEntry::make('changes')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
     ->options([
@@ -69,46 +82,6 @@ DiffEntry::make('changes')
 ```
 
 See the [@pierre/diffs documentation](https://diffs.com/docs) for all available options.
-
-## Comparing Model Versions
-
-Use `fromModels()` to compare an attribute across two Eloquent model instances:
-
-```php
-DiffEntry::make('changes')
-    ->fromModels(
-        old: fn ($record) => $record->previousVersion,
-        new: fn ($record) => $record,
-        attribute: 'content',
-    )
-```
-
-Both `old` and `new` accept a model instance or a closure that receives the current record. The `attribute` parameter defaults to `'content'` and can be a string or closure. If the old model is `null`, the diff shows the full new content as additions.
-
-## Comparing Arrays / JSON
-
-Use `fromArrays()` to diff structured data. This automatically sets the language to `json`:
-
-```php
-DiffEntry::make('changes')
-    ->fromArrays(
-        old: fn ($record) => $record->previousVersion->settings,
-        new: fn ($record) => $record->settings,
-    )
-```
-
-### Limiting to Specific Keys
-
-Use the `only` parameter to limit the diff to specific keys:
-
-```php
-DiffEntry::make('changes')
-    ->fromArrays(
-        old: fn ($record) => $record->previousVersion->settings,
-        new: fn ($record) => $record->settings,
-        only: ['theme', 'notifications'],
-    )
-```
 
 ## Configuration
 
@@ -123,9 +96,7 @@ php artisan vendor:publish --tag="filament-diffs-config"
 ```php
 // config/filament-diffs.php
 return [
-    'default_file_name' => null,
-    'default_language' => null,
-    'default_options' => [],
+    'default_theme' => null,
 ];
 ```
 
@@ -141,22 +112,18 @@ public function panel(Panel $panel): Panel
     return $panel
         ->plugin(
             FilamentDiffsPlugin::make()
-                ->defaultLanguage('markdown')
-                ->defaultFileName('document.md')
-                ->defaultOptions([
-                    'theme' => 'github-dark',
-                ])
+                ->defaultTheme('github-dark')
         );
 }
 ```
 
 ### Precedence
 
-Settings are resolved in the following order (highest priority first):
+Theme is resolved in the following order (highest priority first):
 
-1. Per-component — `->fileName()`, `->language()`, `->options()`
-2. Panel plugin — `FilamentDiffsPlugin` fluent methods
-3. Config file — `config/filament-diffs.php`
+1. Per-component — `->options(['theme' => '...'])`
+2. Panel plugin — `FilamentDiffsPlugin::make()->defaultTheme()`
+3. Config file — `config('filament-diffs.default_theme')`
 
 ## Testing
 

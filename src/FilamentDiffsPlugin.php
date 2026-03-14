@@ -7,13 +7,7 @@ use Filament\Panel;
 
 class FilamentDiffsPlugin implements Plugin
 {
-    protected ?string $defaultFileName = null;
-
-    protected ?string $defaultLanguage = null;
-
-    protected ?array $defaultDiffOptions = null;
-
-    protected ?array $defaultFileOptions = null;
+    protected ?string $defaultTheme = null;
 
     public function getId(): string
     {
@@ -43,51 +37,15 @@ class FilamentDiffsPlugin implements Plugin
         return $plugin;
     }
 
-    public function defaultFileName(?string $fileName): static
+    public function defaultTheme(?string $theme): static
     {
-        $this->defaultFileName = $fileName;
+        $this->defaultTheme = $theme;
 
         return $this;
     }
 
-    public function getDefaultFileName(): ?string
+    public function getDefaultTheme(): ?string
     {
-        return $this->defaultFileName;
-    }
-
-    public function defaultLanguage(?string $language): static
-    {
-        $this->defaultLanguage = $language;
-
-        return $this;
-    }
-
-    public function getDefaultLanguage(): ?string
-    {
-        return $this->defaultLanguage;
-    }
-
-    public function defaultDiffOptions(array $options): static
-    {
-        $this->defaultDiffOptions = $options;
-
-        return $this;
-    }
-
-    public function getDefaultDiffOptions(): ?array
-    {
-        return $this->defaultDiffOptions;
-    }
-
-    public function defaultFileOptions(array $options): static
-    {
-        $this->defaultFileOptions = $options;
-
-        return $this;
-    }
-
-    public function getDefaultFileOptions(): ?array
-    {
-        return $this->defaultFileOptions;
+        return $this->defaultTheme;
     }
 }

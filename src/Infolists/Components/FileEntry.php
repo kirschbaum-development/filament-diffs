@@ -4,7 +4,6 @@ namespace TravisObregon\FilamentDiffs\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
-use Illuminate\Database\Eloquent\Model;
 use TravisObregon\FilamentDiffs\Infolists\Components\Concerns\HasDiffsConfiguration;
 
 class FileEntry extends Entry
@@ -22,44 +21,6 @@ class FileEntry extends Entry
         return $this;
     }
 
-    /**
-     * @param  Model|Closure  $model
-     */
-    public function fromModel(mixed $model, string | Closure $attribute = 'content'): static
-    {
-        $this->content(function () use ($model, $attribute): ?string {
-            $model = $this->evaluate($model);
-            $attr = $this->evaluate($attribute);
-
-            return $model?->getAttribute($attr);
-        });
-
-        return $this;
-    }
-
-    /**
-     * @param  array<string, mixed>|Closure  $data
-     * @param  array<int, string>|null  $only
-     */
-    public function fromArray(array | Closure $data, ?array $only = null): static
-    {
-        $this->content(function () use ($data, $only): string {
-            $data = $this->evaluate($data);
-
-            if ($only !== null) {
-                $data = array_intersect_key($data, array_flip($only));
-            }
-
-            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        });
-
-        if ($this->language === null) {
-            $this->language('json');
-        }
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->evaluate($this->content);
@@ -67,11 +28,10 @@ class FileEntry extends Entry
 
     public function getOptions(): array
     {
-        return array_merge(
-            config('filament-diffs.default_file_options', []),
-            $this->getPlugin()?->getDefaultFileOptions() ?? [],
-            $this->evaluate($this->options),
-        );
+        return array_filter([
+            'theme' => $this->getTheme(),
+            ...$this->evaluate($this->options),
+        ], fn ($value): bool => $value !== null);
     }
 
     public function getPayload(): array

@@ -36,16 +36,18 @@ trait HasDiffsConfiguration
 
     public function getFileName(): ?string
     {
-        return $this->evaluate($this->fileName)
-            ?? $this->getPlugin()?->getDefaultFileName()
-            ?? config('filament-diffs.default_file_name');
+        return $this->evaluate($this->fileName);
     }
 
     public function getLanguage(): ?string
     {
-        return $this->evaluate($this->language)
-            ?? $this->getPlugin()?->getDefaultLanguage()
-            ?? config('filament-diffs.default_language');
+        return $this->evaluate($this->language);
+    }
+
+    public function getTheme(): ?string
+    {
+        return $this->getPlugin()?->getDefaultTheme()
+            ?? config('filament-diffs.default_theme');
     }
 
     protected function getPlugin(): ?FilamentDiffsPlugin
