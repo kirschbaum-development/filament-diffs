@@ -11,7 +11,9 @@ class FilamentDiffsPlugin implements Plugin
 
     protected ?string $defaultLanguage = null;
 
-    protected ?array $defaultOptions = null;
+    protected ?array $defaultDiffOptions = null;
+
+    protected ?array $defaultFileOptions = null;
 
     public function getId(): string
     {
@@ -65,15 +67,27 @@ class FilamentDiffsPlugin implements Plugin
         return $this->defaultLanguage;
     }
 
-    public function defaultOptions(array $options): static
+    public function defaultDiffOptions(array $options): static
     {
-        $this->defaultOptions = $options;
+        $this->defaultDiffOptions = $options;
 
         return $this;
     }
 
-    public function getDefaultOptions(): ?array
+    public function getDefaultDiffOptions(): ?array
     {
-        return $this->defaultOptions;
+        return $this->defaultDiffOptions;
+    }
+
+    public function defaultFileOptions(array $options): static
+    {
+        $this->defaultFileOptions = $options;
+
+        return $this;
+    }
+
+    public function getDefaultFileOptions(): ?array
+    {
+        return $this->defaultFileOptions;
     }
 }
