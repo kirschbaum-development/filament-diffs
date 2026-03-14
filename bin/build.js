@@ -45,8 +45,12 @@ const defaultOptions = {
 
 compile({
     ...defaultOptions,
-    entryPoints: ['./resources/js/index.js'],
-    outfile: './resources/dist/filament-diffs.js',
-}).then(() => {
-    console.log(`Build completed for filament-diffs.js`)
+    entryPoints: ['./resources/js/components/file-entry.js'],
+    outfile: './resources/dist/components/file-entry.js',
+})
+
+compile({
+    ...defaultOptions,
+    entryPoints: ['./resources/js/components/file-diff-entry.js'],
+    outfile: './resources/dist/components/file-diff-entry.js',
 })

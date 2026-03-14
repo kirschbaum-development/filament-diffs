@@ -1,12 +1,16 @@
 <x-dynamic-component :component="$getEntryWrapperView()" :entry="$entry">
     @php
         $payload = $getPayload();
-        $wireKey = md5(json_encode($payload));
+        $statePath = $getStatePath();
+        $wireKey = $statePath . '-' . md5(json_encode($payload));
     @endphp
 
     <div
-        wire:key="filament-file-diff-entry-{{ $wireKey }}"
-        x-data="filamentFileDiffEntry(@js($payload))"
+        x-load
+        x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-diff-entry', 'travisobregon/filament-diffs') }}"
+        x-data="fileDiffEntry(@js($payload))"
+        wire:ignore
+        wire:key="{{ $wireKey }}"
     >
         <div x-ref="mount"></div>
     </div>

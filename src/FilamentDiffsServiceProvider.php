@@ -2,8 +2,8 @@
 
 namespace TravisObregon\FilamentDiffs;
 
+use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -40,7 +40,8 @@ class FilamentDiffsServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            Js::make('filament-diffs', __DIR__ . '/../resources/dist/filament-diffs.js'),
+            AlpineComponent::make('file-entry', __DIR__ . '/../resources/dist/components/file-entry.js'),
+            AlpineComponent::make('file-diff-entry', __DIR__ . '/../resources/dist/components/file-diff-entry.js'),
         ];
     }
 }

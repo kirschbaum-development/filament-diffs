@@ -35,14 +35,21 @@ Both `old()` and `new()` accept a string or a closure that receives the current 
 
 ### File Entry
 
-Use `FileEntry` to render a single file with syntax highlighting:
+Use `FileEntry` to render a single file with syntax highlighting. Like other Filament entries, the state is resolved from the record attribute matching the entry name:
 
 ```php
 use TravisObregon\FilamentDiffs\Infolists\Components\FileEntry;
 
-FileEntry::make('source')
+FileEntry::make('content')
     ->label('Source Code')
-    ->content(fn ($record) => $record->content)
+    ->fileName('app.php')
+```
+
+You can override the state with `->state()` or `->formatStateUsing()`:
+
+```php
+FileEntry::make('source')
+    ->state(fn ($record) => $record->content)
     ->fileName('app.php')
 ```
 
