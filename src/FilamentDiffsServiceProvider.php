@@ -2,6 +2,7 @@
 
 namespace TravisObregon\FilamentDiffs;
 
+use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
@@ -34,7 +35,7 @@ class FilamentDiffsServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<\Filament\Support\Assets\Asset>
+     * @return array<Asset>
      */
     protected function getAssets(): array
     {

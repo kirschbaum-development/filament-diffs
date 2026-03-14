@@ -4,6 +4,7 @@ namespace TravisObregon\FilamentDiffs\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
+use Illuminate\Database\Eloquent\Model;
 use TravisObregon\FilamentDiffs\Infolists\Components\Concerns\HasDiffsConfiguration;
 
 class FileDiffEntry extends Entry
@@ -31,8 +32,8 @@ class FileDiffEntry extends Entry
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Model|\Closure  $old
-     * @param  \Illuminate\Database\Eloquent\Model|\Closure  $new
+     * @param  Model|Closure  $old
+     * @param  Model|Closure  $new
      */
     public function fromModels(mixed $old, mixed $new, string | Closure $attribute = 'content'): static
     {
@@ -54,8 +55,8 @@ class FileDiffEntry extends Entry
     }
 
     /**
-     * @param  array<string, mixed>|\Closure  $old
-     * @param  array<string, mixed>|\Closure  $new
+     * @param  array<string, mixed>|Closure  $old
+     * @param  array<string, mixed>|Closure  $new
      * @param  array<int, string>|null  $only
      */
     public function fromArrays(array | Closure $old, array | Closure $new, ?array $only = null): static
