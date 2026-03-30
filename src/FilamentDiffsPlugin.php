@@ -1,6 +1,6 @@
 <?php
 
-namespace TravisObregon\FilamentDiffs;
+namespace Kirschbaum\FilamentDiffs;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;

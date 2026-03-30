@@ -3,10 +3,10 @@
 use Filament\Contracts\Plugin;
 use Filament\Infolists\Components\Entry;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
-use TravisObregon\FilamentDiffs\FilamentDiffsServiceProvider;
-use TravisObregon\FilamentDiffs\Infolists\Components\FileDiffEntry;
-use TravisObregon\FilamentDiffs\Infolists\Components\FileEntry;
+use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
+use Kirschbaum\FilamentDiffs\FilamentDiffsServiceProvider;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
 
 test('plugin implements filament plugin contract')
     ->expect(FilamentDiffsPlugin::class)

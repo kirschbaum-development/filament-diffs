@@ -1,6 +1,6 @@
 <?php
 
-namespace TravisObregon\FilamentDiffs;
+namespace Kirschbaum\FilamentDiffs;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
@@ -31,7 +31,7 @@ class FilamentDiffsServiceProvider extends PackageServiceProvider
 
     protected function getAssetPackageName(): ?string
     {
-        return 'travisobregon/filament-diffs';
+        return 'kirschbaum-development/filament-diffs';
     }
 
     /**

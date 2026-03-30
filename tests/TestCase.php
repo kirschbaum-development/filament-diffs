@@ -1,6 +1,6 @@
 <?php
 
-namespace TravisObregon\FilamentDiffs\Tests;
+namespace Kirschbaum\FilamentDiffs\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
@@ -17,7 +17,7 @@ use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use TravisObregon\FilamentDiffs\FilamentDiffsServiceProvider;
+use Kirschbaum\FilamentDiffs\FilamentDiffsServiceProvider;
 
 class TestCase extends Orchestra
 {

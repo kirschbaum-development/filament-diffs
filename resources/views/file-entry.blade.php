@@ -7,7 +7,7 @@
 
     <div
         x-load
-        x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-entry', 'travisobregon/filament-diffs') }}"
+        x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-entry', 'kirschbaum-development/filament-diffs') }}"
         x-data="fileEntry(@js($payload))"
         wire:ignore
         wire:key="{{ $wireKey }}"

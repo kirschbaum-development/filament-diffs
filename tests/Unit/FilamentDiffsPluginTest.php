@@ -1,6 +1,6 @@
 <?php
 
-use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
+use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
 
 test('returns the correct plugin id', function () {
     $plugin = FilamentDiffsPlugin::make();

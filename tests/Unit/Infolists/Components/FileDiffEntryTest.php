@@ -1,6 +1,6 @@
 <?php
 
-use TravisObregon\FilamentDiffs\Infolists\Components\FileDiffEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
 
 test('uses the correct view', function () {
     $entry = FileDiffEntry::make('content');

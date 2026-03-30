@@ -1,10 +1,10 @@
 <?php
 
-namespace TravisObregon\FilamentDiffs\Infolists\Components;
+namespace Kirschbaum\FilamentDiffs\Infolists\Components;
 
 use Closure;
 use Filament\Infolists\Components\Entry;
-use TravisObregon\FilamentDiffs\Infolists\Components\Concerns\HasDiffsConfiguration;
+use Kirschbaum\FilamentDiffs\Infolists\Components\Concerns\HasDiffsConfiguration;
 
 class FileDiffEntry extends Entry
 {

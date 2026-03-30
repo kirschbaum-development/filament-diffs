@@ -1,7 +1,7 @@
 <?php
 
-use TravisObregon\FilamentDiffs\Infolists\Components\FileDiffEntry;
-use TravisObregon\FilamentDiffs\Infolists\Components\FileEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
 
 dataset('diff components', [
     'FileEntry' => fn () => FileEntry::make('content'),

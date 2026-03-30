@@ -1,19 +1,19 @@
 # Filament Diffs
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/travisobregon/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/travisobregon/filament-diffs)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/travisobregon/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/travisobregon/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/travisobregon/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/travisobregon/filament-diffs)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
 
 Render visual diffs between Eloquent model versions in [Filament](https://filamentphp.com). Powered by [@pierre/diffs](https://diffs.com).
 
-![Screenshot](https://raw.githubusercontent.com/travisobregon/filament-diffs/main/.github/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/kirschbaum-development/filament-diffs/main/.github/screenshot.png)
 
 ## Installation
 
 Install the plugin with Composer:
 
 ```bash
-composer require travisobregon/filament-diffs
+composer require kirschbaum-development/filament-diffs
 ```
 
 ## Infolist Entries
@@ -23,7 +23,7 @@ composer require travisobregon/filament-diffs
 Use `FileDiffEntry` in any [infolist](https://filamentphp.com/docs/5.x/infolists/entries/getting-started) to display a diff between two strings:
 
 ```php
-use TravisObregon\FilamentDiffs\Infolists\Components\FileDiffEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
 
 FileDiffEntry::make('changes')
     ->label('Changes')
@@ -38,7 +38,7 @@ Both `old()` and `new()` accept a string or a closure that receives the current 
 Use `FileEntry` to render a single file with syntax highlighting. Like other Filament entries, the state is resolved from the record attribute matching the entry name:
 
 ```php
-use TravisObregon\FilamentDiffs\Infolists\Components\FileEntry;
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
 
 FileEntry::make('content')
     ->label('Source Code')
@@ -112,7 +112,7 @@ return [
 Register the plugin in your [panel provider](https://filamentphp.com/docs/5.x/panels/plugins) for per-panel configuration that overrides config file defaults:
 
 ```php
-use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
+use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
 
 public function panel(Panel $panel): Panel
 {
@@ -153,6 +153,7 @@ Please review [our security policy](.github/SECURITY.md) on how to report securi
 ## Credits
 
 - [Travis Obregon](https://github.com/travisobregon)
+- [Kirschbaum Development Group](https://kirschbaumdevelopment.com)
 - [@pierre/diffs](https://diffs.com) by [The Pierre Computer Co.](https://github.com/pierrecomputer)
 - [All Contributors](../../contributors)
 

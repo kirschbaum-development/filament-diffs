@@ -1,10 +1,10 @@
 <?php
 
-namespace TravisObregon\FilamentDiffs\Infolists\Components\Concerns;
+namespace Kirschbaum\FilamentDiffs\Infolists\Components\Concerns;
 
 use Closure;
 use Exception;
-use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
+use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
 
 trait HasDiffsConfiguration
 {

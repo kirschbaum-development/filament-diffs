@@ -1,18 +1,18 @@
 {
-    "name": "travisobregon/filament-diffs",
-    "description": "Render visual diffs between Eloquent model versions in Filament.",
+    "name": "kirschbaum-development/filament-diffs",
+    "description": "A Filament plugin that wraps @pierre/diffs to render beautiful file diffs and syntax-highlighted code views.",
     "keywords": [
-        "travisobregon",
+        "kirschbaum-development",
         "laravel",
         "filamentphp",
         "filament",
         "filament-plugin",
         "filament-diffs"
     ],
-    "homepage": "https://github.com/travisobregon/filament-diffs",
+    "homepage": "https://github.com/kirschbaum-development/filament-diffs",
     "support": {
-        "issues": "https://github.com/travisobregon/filament-diffs/issues",
-        "source": "https://github.com/travisobregon/filament-diffs"
+        "issues": "https://github.com/kirschbaum-development/filament-diffs/issues",
+        "source": "https://github.com/kirschbaum-development/filament-diffs"
     },
     "license": "MIT",
     "authors": [
@@ -41,12 +41,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TravisObregon\\FilamentDiffs\\": "src/"
+            "Kirschbaum\\FilamentDiffs\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TravisObregon\\FilamentDiffs\\Tests\\": "tests/"
+            "Kirschbaum\\FilamentDiffs\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -63,7 +63,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TravisObregon\\FilamentDiffs\\FilamentDiffsServiceProvider"
+                "Kirschbaum\\FilamentDiffs\\FilamentDiffsServiceProvider"
             ]
         }
     },
