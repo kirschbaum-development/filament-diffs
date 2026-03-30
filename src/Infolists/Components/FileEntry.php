@@ -16,7 +16,7 @@ class FileEntry extends Entry
         return array_filter([
             'theme' => $this->getTheme(),
             ...$this->evaluate($this->options),
-        ], fn ($value): bool => $value !== null);
+        ], fn (mixed $value): bool => $value !== null);
     }
 
     public function getPayload(): array

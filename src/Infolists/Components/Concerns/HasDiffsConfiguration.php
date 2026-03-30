@@ -54,7 +54,7 @@ trait HasDiffsConfiguration
     {
         try {
             return FilamentDiffsPlugin::get();
-        } catch (\LogicException) {
+        } catch (\Exception) {
             return null;
         }
     }
