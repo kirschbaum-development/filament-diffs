@@ -3,6 +3,7 @@
 namespace TravisObregon\FilamentDiffs\Infolists\Components\Concerns;
 
 use Closure;
+use Exception;
 use TravisObregon\FilamentDiffs\FilamentDiffsPlugin;
 
 trait HasDiffsConfiguration
@@ -54,7 +55,7 @@ trait HasDiffsConfiguration
     {
         try {
             return FilamentDiffsPlugin::get();
-        } catch (\Exception) {
+        } catch (Exception) {
             return null;
         }
     }

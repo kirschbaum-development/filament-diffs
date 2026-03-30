@@ -9,6 +9,12 @@
         "single_trait_insert_per_statement": true,
         "types_spaces": {
             "space": "single"
+        },
+        "fully_qualified_strict_types": true,
+        "global_namespace_import": {
+            "import_classes": true,
+            "import_functions": true,
+            "import_constants": true
         }
     }
 }
