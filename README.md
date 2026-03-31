@@ -1,10 +1,18 @@
 # Filament Diffs
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=3.x&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3A3.x)
 [![Total Downloads](https://img.shields.io/packagist/dt/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
 
 Render visual diffs between Eloquent model versions in [Filament](https://filamentphp.com). Powered by [@pierre/diffs](https://diffs.com).
+
+## Version Compatibility
+
+| Plugin Version | Filament Version |
+|----------------|------------------|
+| 3.x            | 3.x              |
+| 4.x            | 4.x              |
+| 5.x            | 5.x              |
 
 ![Screenshot](https://raw.githubusercontent.com/kirschbaum-development/filament-diffs/main/.github/screenshot.png)
 
@@ -13,14 +21,14 @@ Render visual diffs between Eloquent model versions in [Filament](https://filame
 Install the plugin with Composer:
 
 ```bash
-composer require kirschbaum-development/filament-diffs
+composer require kirschbaum-development/filament-diffs:"^3.0" -W
 ```
 
 ## Infolist Entries
 
 ### File Diff Entry
 
-Use `FileDiffEntry` in any [infolist](https://filamentphp.com/docs/5.x/infolists/entries/getting-started) to display a diff between two strings:
+Use `FileDiffEntry` in any [infolist](https://filamentphp.com/docs/3.x/infolists/entries/getting-started) to display a diff between two strings:
 
 ```php
 use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
@@ -109,7 +117,7 @@ return [
 
 ### Panel Plugin
 
-Register the plugin in your [panel provider](https://filamentphp.com/docs/5.x/panels/plugins) for per-panel configuration that overrides config file defaults:
+Register the plugin in your [panel provider](https://filamentphp.com/docs/3.x/panels/plugins) for per-panel configuration that overrides config file defaults:
 
 ```php
 use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
