@@ -2,11 +2,11 @@
 
 use Filament\Contracts\Plugin;
 use Filament\Infolists\Components\Entry;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
 use Kirschbaum\FilamentDiffs\FilamentDiffsServiceProvider;
 use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
 use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 test('plugin implements filament plugin contract')
     ->expect(FilamentDiffsPlugin::class)
