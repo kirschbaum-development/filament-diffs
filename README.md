@@ -1,27 +1,24 @@
 # Filament Diffs
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=3.x&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3A3.x)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
 
 Render visual diffs between Eloquent model versions in [Filament](https://filamentphp.com). Powered by [@pierre/diffs](https://diffs.com).
 
-## Version Compatibility
-
-| Plugin Version | Filament Version |
-|----------------|------------------|
-| 3.x            | 3.x              |
-| 4.x            | 4.x              |
-| 5.x            | 5.x              |
-
 ![Screenshot](https://raw.githubusercontent.com/kirschbaum-development/filament-diffs/main/.github/screenshot.png)
+
+## Requirements
+
+- PHP 8.1+
+- Filament 3.x, 4.x, or 5.x
 
 ## Installation
 
 Install the plugin with Composer:
 
 ```bash
-composer require kirschbaum-development/filament-diffs:"^3.0" -W
+composer require kirschbaum-development/filament-diffs -W
 ```
 
 ## Infolist Entries
