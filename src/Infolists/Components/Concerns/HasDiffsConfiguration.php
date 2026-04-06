@@ -51,6 +51,14 @@ trait HasDiffsConfiguration
             ?? config('filament-diffs.default_theme');
     }
 
+    public function getOptions(): array
+    {
+        return array_filter([
+            'theme' => $this->getTheme(),
+            ...$this->evaluate($this->options),
+        ], fn (mixed $value): bool => $value !== null);
+    }
+
     protected function getPlugin(): ?FilamentDiffsPlugin
     {
         try {

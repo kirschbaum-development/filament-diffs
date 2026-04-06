@@ -97,3 +97,23 @@ test('options accepts a closure returning array', function ($component) {
 
     expect($options['tabSize'])->toBe(2);
 })->with('diff components');
+
+test('getOptions filters only null values, preserving falsy values', function ($component) {
+    config()->set('filament-diffs.default_theme', null);
+
+    $component->options([
+        'showLineNumbers' => false,
+        'tabSize' => 0,
+        'title' => '',
+        'foo' => null,
+    ]);
+
+    $options = $component->getOptions();
+
+    expect($options)
+        ->toHaveKey('showLineNumbers', false)
+        ->toHaveKey('tabSize', 0)
+        ->toHaveKey('title', '')
+        ->not->toHaveKey('foo')
+        ->not->toHaveKey('theme');
+})->with('diff components');

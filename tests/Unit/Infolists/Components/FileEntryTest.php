@@ -8,41 +8,9 @@ test('uses the correct view', function () {
     expect($entry->getView())->toBe('filament-diffs::file-entry');
 });
 
-test('getOptions merges theme and evaluated options', function () {
+test('getPayload returns state content and metadata', function () {
     config()->set('filament-diffs.default_theme', 'github-dark');
 
-    $entry = FileEntry::make('content')
-        ->options(['tabSize' => 4]);
-
-    $options = $entry->getOptions();
-
-    expect($options)
-        ->toHaveKey('theme', 'github-dark')
-        ->toHaveKey('tabSize', 4);
-});
-
-test('getOptions filters only null values', function () {
-    config()->set('filament-diffs.default_theme', null);
-
-    $entry = FileEntry::make('content')
-        ->options([
-            'showLineNumbers' => false,
-            'tabSize' => 0,
-            'title' => '',
-            'foo' => null,
-        ]);
-
-    $options = $entry->getOptions();
-
-    expect($options)
-        ->toHaveKey('showLineNumbers', false)
-        ->toHaveKey('tabSize', 0)
-        ->toHaveKey('title', '')
-        ->not->toHaveKey('foo')
-        ->not->toHaveKey('theme');
-});
-
-test('getPayload returns state content and metadata', function () {
     $entry = FileEntry::make('content')
         ->state('<?php echo "hello";')
         ->fileName('hello.php')
@@ -50,11 +18,14 @@ test('getPayload returns state content and metadata', function () {
 
     $payload = $entry->getPayload();
 
-    expect($payload)
-        ->toHaveKey('content', '<?php echo "hello";')
-        ->toHaveKey('fileName', 'hello.php')
-        ->toHaveKey('language', 'php')
-        ->toHaveKey('options');
+    expect($payload)->toEqual([
+        'content' => '<?php echo "hello";',
+        'fileName' => 'hello.php',
+        'language' => 'php',
+        'options' => [
+            'theme' => 'github-dark',
+        ],
+    ]);
 });
 
 test('getPayload defaults content to empty string when state is null', function () {
@@ -67,6 +38,8 @@ test('getPayload defaults content to empty string when state is null', function 
 });
 
 test('getPayload works with closure-based configuration', function () {
+    config()->set('filament-diffs.default_theme', 'github-dark');
+
     $entry = FileEntry::make('content')
         ->state('some code')
         ->fileName(fn () => 'dynamic.php')
@@ -75,9 +48,13 @@ test('getPayload works with closure-based configuration', function () {
 
     $payload = $entry->getPayload();
 
-    expect($payload)
-        ->toHaveKey('content', 'some code')
-        ->toHaveKey('fileName', 'dynamic.php')
-        ->toHaveKey('language', 'javascript')
-        ->and($payload['options'])->toHaveKey('tabSize', 2);
+    expect($payload)->toEqual([
+        'content' => 'some code',
+        'fileName' => 'dynamic.php',
+        'language' => 'javascript',
+        'options' => [
+            'theme' => 'github-dark',
+            'tabSize' => 2,
+        ],
+    ]);
 });

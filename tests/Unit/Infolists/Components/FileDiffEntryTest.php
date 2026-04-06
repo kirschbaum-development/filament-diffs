@@ -64,41 +64,9 @@ test('getNewContent returns null when unset', function () {
     expect($entry->getNewContent())->toBeNull();
 });
 
-test('getOptions merges theme and evaluated options', function () {
+test('getPayload returns old/new content and metadata', function () {
     config()->set('filament-diffs.default_theme', 'github-dark');
 
-    $entry = FileDiffEntry::make('content')
-        ->options(['tabSize' => 4]);
-
-    $options = $entry->getOptions();
-
-    expect($options)
-        ->toHaveKey('theme', 'github-dark')
-        ->toHaveKey('tabSize', 4);
-});
-
-test('getOptions filters only null values', function () {
-    config()->set('filament-diffs.default_theme', null);
-
-    $entry = FileDiffEntry::make('content')
-        ->options([
-            'showLineNumbers' => false,
-            'tabSize' => 0,
-            'title' => '',
-            'foo' => null,
-        ]);
-
-    $options = $entry->getOptions();
-
-    expect($options)
-        ->toHaveKey('showLineNumbers', false)
-        ->toHaveKey('tabSize', 0)
-        ->toHaveKey('title', '')
-        ->not->toHaveKey('foo')
-        ->not->toHaveKey('theme');
-});
-
-test('getPayload returns old/new content and metadata', function () {
     $entry = FileDiffEntry::make('content')
         ->old('old code')
         ->new('new code')
@@ -107,12 +75,15 @@ test('getPayload returns old/new content and metadata', function () {
 
     $payload = $entry->getPayload();
 
-    expect($payload)
-        ->toHaveKey('old', 'old code')
-        ->toHaveKey('new', 'new code')
-        ->toHaveKey('fileName', 'app.php')
-        ->toHaveKey('language', 'php')
-        ->toHaveKey('options');
+    expect($payload)->toEqual([
+        'old' => 'old code',
+        'new' => 'new code',
+        'fileName' => 'app.php',
+        'language' => 'php',
+        'options' => [
+            'theme' => 'github-dark',
+        ],
+    ]);
 });
 
 test('getPayload defaults old and new to empty strings when null', function () {
@@ -125,6 +96,8 @@ test('getPayload defaults old and new to empty strings when null', function () {
 });
 
 test('getPayload works with closure-based configuration', function () {
+    config()->set('filament-diffs.default_theme', 'github-dark');
+
     $entry = FileDiffEntry::make('content')
         ->old(fn () => 'old dynamic')
         ->new(fn () => 'new dynamic')
@@ -134,10 +107,14 @@ test('getPayload works with closure-based configuration', function () {
 
     $payload = $entry->getPayload();
 
-    expect($payload)
-        ->toHaveKey('old', 'old dynamic')
-        ->toHaveKey('new', 'new dynamic')
-        ->toHaveKey('fileName', 'dynamic.php')
-        ->toHaveKey('language', 'javascript')
-        ->and($payload['options'])->toHaveKey('tabSize', 2);
+    expect($payload)->toEqual([
+        'old' => 'old dynamic',
+        'new' => 'new dynamic',
+        'fileName' => 'dynamic.php',
+        'language' => 'javascript',
+        'options' => [
+            'theme' => 'github-dark',
+            'tabSize' => 2,
+        ],
+    ]);
 });

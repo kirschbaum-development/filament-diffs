@@ -11,14 +11,6 @@ class FileEntry extends Entry
 
     protected string $view = 'filament-diffs::file-entry';
 
-    public function getOptions(): array
-    {
-        return array_filter([
-            'theme' => $this->getTheme(),
-            ...$this->evaluate($this->options),
-        ], fn (mixed $value): bool => $value !== null);
-    }
-
     public function getPayload(): array
     {
         return [
