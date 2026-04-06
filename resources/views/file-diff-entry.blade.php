@@ -6,8 +6,8 @@
     @endphp
 
     <div
-        ax-load
-        ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-diff-entry', 'kirschbaum-development/filament-diffs') }}"
+        x-load
+        x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-diff-entry', 'kirschbaum-development/filament-diffs') }}"
         x-data="fileDiffEntry(@js($payload))"
         wire:ignore
         wire:key="{{ $wireKey }}"

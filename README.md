@@ -4,9 +4,29 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kirschbaum-development/filament-diffs/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kirschbaum-development/filament-diffs/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kirschbaum-development/filament-diffs.svg?style=flat-square)](https://packagist.org/packages/kirschbaum-development/filament-diffs)
 
-Render visual diffs between Eloquent model versions in [Filament](https://filamentphp.com). Powered by [@pierre/diffs](https://diffs.com).
+Syntax-highlighted file viewing and visual diff rendering for [Filament](https://filamentphp.com) infolists. Powered by [@pierre/diffs](https://diffs.com).
 
-![Screenshot](https://raw.githubusercontent.com/kirschbaum-development/filament-diffs/main/.github/screenshot.png)
+## Components
+
+### FileEntry
+
+Renders any text-based content with syntax highlighting. Useful for displaying raw file contents, stored code, API payloads, or any structured text directly in an infolist.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="art/file-entry-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="art/file-entry-light.png">
+  <img src="art/file-entry-light.png" alt="FileEntry component">
+</picture>
+
+### FileDiffEntry
+
+Renders a side-by-side diff between two versions of content with syntax highlighting. Useful for comparing model versions, reviewing changes, or showing before/after states.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="art/file-diff-entry-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="art/file-diff-entry-light.png">
+  <img src="art/file-diff-entry-light.png" alt="FileDiffEntry component">
+</picture>
 
 ## Requirements
 
@@ -15,66 +35,70 @@ Render visual diffs between Eloquent model versions in [Filament](https://filame
 
 ## Installation
 
-Install the plugin with Composer:
-
 ```bash
 composer require kirschbaum-development/filament-diffs -W
 ```
 
-## Infolist Entries
-
-### File Diff Entry
-
-Use `FileDiffEntry` in any [infolist](https://filamentphp.com/docs/3.x/infolists/entries/getting-started) to display a diff between two strings:
+Then register the plugin in your [panel provider](https://filamentphp.com/docs/panels/plugins):
 
 ```php
-use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
+use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
 
-FileDiffEntry::make('changes')
-    ->label('Changes')
-    ->old(fn ($record) => $record->previousVersion?->content)
-    ->new(fn ($record) => $record->content)
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            FilamentDiffsPlugin::make(),
+        ]);
+}
 ```
 
-Both `old()` and `new()` accept a string or a closure that receives the current record. If either value is `null`, it is treated as an empty string.
+## Usage
 
-### File Entry
+### FileEntry
 
-Use `FileEntry` to render a single file with syntax highlighting. Like other Filament entries, the state is resolved from the record attribute matching the entry name:
+Use `FileEntry` in any [infolist](https://filamentphp.com/docs/infolists/entries/getting-started) to render a field's value with syntax highlighting. The state is resolved from the record attribute matching the entry name:
 
 ```php
 use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
 
-FileEntry::make('content')
-    ->label('Source Code')
-    ->fileName('app.php')
+FileEntry::make('webhook_payload')
+    ->label('Webhook Payload')
+    ->fileName('payload.json')
 ```
 
-You can override the state with `->state()` or `->formatStateUsing()`:
+You can override the state entirely using a closure:
 
 ```php
-FileEntry::make('source')
-    ->state(fn ($record) => $record->content)
-    ->fileName('app.php')
+FileEntry::make('webhook_payload')
+    ->label('Webhook Payload')
+    ->fileName('payload.json')
+    ->state(fn ($record) => $record->getRawPayload())
 ```
 
-### Setting the File Name
+### FileDiffEntry
 
-The file name controls syntax highlighting detection when no explicit language is set:
+Use `FileDiffEntry` to render a side-by-side diff between two strings. Both `->old()` and `->new()` accept a string or a closure that receives the current record. A `null` value is treated as an empty string, making it easy to represent newly created files.
 
 ```php
-FileDiffEntry::make('changes')
+use Kirschbaum\FilamentDiffs\Infolists\Components\FileDiffEntry;
+
+FileDiffEntry::make('content')
+    ->label('Changes')
+    ->fileName('post.md')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
-    ->fileName('post.md')
 ```
 
 ### Setting the Language
 
-You can explicitly set the syntax highlighting language using any [Shiki language identifier](https://shiki.style/languages) (e.g., `php`, `javascript`, `markdown`, `json`). When set, this overrides language detection from the file name:
+Both components detect the syntax highlighting language from the file name. You can also set it explicitly using any [Shiki language identifier](https://shiki.style/languages) — this takes precedence over file name detection:
 
 ```php
-FileDiffEntry::make('changes')
+FileEntry::make('source')
+    ->language('php')
+
+FileDiffEntry::make('content')
     ->old(fn ($record) => $record->previousVersion?->content)
     ->new(fn ($record) => $record->content)
     ->language('markdown')
@@ -82,14 +106,21 @@ FileDiffEntry::make('changes')
 
 ### Passing Options
 
-You can pass additional options directly to the underlying [@pierre/diffs components](https://diffs.com/docs):
+Both components accept an `->options()` array that is passed directly to the underlying [@pierre/diffs](https://diffs.com/docs) components, giving you access to the full range of configuration including themes, diff styles, and more:
 
 ```php
-FileDiffEntry::make('changes')
-    ->old(fn ($record) => $record->previousVersion?->content)
-    ->new(fn ($record) => $record->content)
+FileEntry::make('source')
+    ->fileName('app.php')
     ->options([
         'theme' => 'github-dark',
+    ])
+
+FileDiffEntry::make('content')
+    ->old(fn ($record) => $record->previousVersion?->content)
+    ->new(fn ($record) => $record->content)
+    ->fileName('post.md')
+    ->options([
+        'diffStyle' => 'unified',
     ])
 ```
 
@@ -97,9 +128,9 @@ See the [@pierre/diffs documentation](https://diffs.com/docs) for all available 
 
 ## Configuration
 
-### Config File
+### Default Theme
 
-Publish the config file to set application-wide defaults:
+Publish the config file to set a default theme across all components in your application:
 
 ```bash
 php artisan vendor:publish --tag="filament-diffs-config"
@@ -112,30 +143,20 @@ return [
 ];
 ```
 
-### Panel Plugin
-
-Register the plugin in your [panel provider](https://filamentphp.com/docs/3.x/panels/plugins) for per-panel configuration that overrides config file defaults:
+You can also set a default theme per panel via the plugin, which takes precedence over the config file:
 
 ```php
-use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        ->plugin(
-            FilamentDiffsPlugin::make()
-                ->defaultTheme('github-dark')
-        );
-}
+FilamentDiffsPlugin::make()
+    ->defaultTheme('github-dark')
 ```
 
-### Precedence
+### Theme Precedence
 
-Theme is resolved in the following order (highest priority first):
+Themes are resolved in the following order (highest priority first):
 
-1. Per-component — `->options(['theme' => '...'])`
-2. Panel plugin — `FilamentDiffsPlugin::make()->defaultTheme()`
-3. Config file — `config('filament-diffs.default_theme')`
+1. Per-component `->options(['theme' => '...'])`
+2. Panel plugin `FilamentDiffsPlugin::make()->defaultTheme('...')`
+3. Config file `filament-diffs.default_theme`
 
 ## Testing
 
