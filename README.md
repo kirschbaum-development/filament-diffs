@@ -39,7 +39,7 @@ Renders a side-by-side diff between two versions of content with syntax highligh
 composer require kirschbaum-development/filament-diffs -W
 ```
 
-Then register the plugin in your [panel provider](https://filamentphp.com/docs/panels/plugins):
+Then register the plugin in your panel provider:
 
 ```php
 use Kirschbaum\FilamentDiffs\FilamentDiffsPlugin;
@@ -57,7 +57,7 @@ public function panel(Panel $panel): Panel
 
 ### FileEntry
 
-Use `FileEntry` in any [infolist](https://filamentphp.com/docs/infolists/entries/getting-started) to render a field's value with syntax highlighting. The state is resolved from the record attribute matching the entry name:
+Use `FileEntry` in any [infolist](https://filamentphp.com/docs/5.x/infolists/overview) to render a field's value with syntax highlighting. The state is resolved from the record attribute matching the entry name:
 
 ```php
 use Kirschbaum\FilamentDiffs\Infolists\Components\FileEntry;
