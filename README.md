@@ -183,6 +183,10 @@ Please review [our security policy](.github/SECURITY.md) on how to report securi
 - [@pierre/diffs](https://diffs.com) by [The Pierre Computer Co.](https://github.com/pierrecomputer)
 - [All Contributors](../../contributors)
 
+## Sponsorship
+
+Development of this package is sponsored by Kirschbaum Development Group, a developer driven company focused on problem solving, team building, and community. Learn more [about us](https://kirschbaumdevelopment.com?utm_source=github) or [join us](https://careers.kirschbaumdevelopment.com?utm_source=github)!
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
