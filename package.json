@@ -10,6 +10,6 @@
         "prettier": "^3.5.3"
     },
     "dependencies": {
-        "@pierre/diffs": "^1.1.0"
+        "@pierre/diffs": "1.1.14"
     }
 }
